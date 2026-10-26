@@ -41,13 +41,17 @@ object TransactService : ITransactor.Stub(), PkgInfoContainer {
             helper.loadBannedPkgList()
             trimBannedPkgInfo {
                 try {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    pm.getPackageInfo(it.packageName, 0L, it.userId)
+                } else {
                     pm.getPackageInfo(it.packageName, 0, it.userId)
+                }
                     false
                 } catch (e: NameNotFoundException) {
                     true
                 } catch (th: Throwable) {
                     XPLogUtils.log(th)
-                    true
+                    false
                 }
             }
         }
