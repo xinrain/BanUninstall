@@ -12,6 +12,8 @@ public interface IPackageManager extends android.os.IInterface {
 
     PackageInfo getPackageInfo(String packageName, long flags, int userId);
 
+    PackageInfo getPackageInfo(String packageName, int flags, int userId);
+
     @TargetApi(Build.VERSION_CODES.TIRAMISU)
     ApplicationInfo getApplicationInfo(String packageName, long flags, int userId);
 
