@@ -1,0 +1,39 @@
+name: Build Release APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Generate signing key
+        run: |
+          keytool -genkeypair -v -keystore keystore.jks \
+            -keyalg RSA -keysize 2048 -validity 36500 \
+            -alias release -storepass release123 -keypass release123 \
+            -dname "CN=BanUninstall Fork, OU=dev, O=dev, L=NA, ST=NA, C=CN"
+
+      - name: Build release APK
+        env:
+          KEYSTORE_PASSWORD: release123
+          KEY_ALIAS: release
+          KEY_PASSWORD: release123
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BanUninstall-release
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
