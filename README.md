@@ -4,6 +4,8 @@
 
 A Xposed Module that prevents apps be uninstalled or apps' data be cleared.<del> Also support activate with root.</del>
 
+# 自用-修复MIUI14/安卓12下重启保护名单丢失
+
 ### Translations
 To translate BanUninstall to your language, please use [Crowdin](https://crowdin.com/project/banuninstall)
 
